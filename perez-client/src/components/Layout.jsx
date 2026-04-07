@@ -1,13 +1,14 @@
-import { Outlet } from 'react-router-dom';
-import NavBar from './NavBar';
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
-    <div className='min-h-screen bg-zinc-950 text-zinc-50'>
+    <div className="min-h-screen bg-zinc-950">
       <NavBar />
-      <main className='pb-16 pt-20'>
-        <Outlet />
+      <main className="pt-20">
+        {children}
       </main>
+      <Footer />
     </div>
   );
 };
