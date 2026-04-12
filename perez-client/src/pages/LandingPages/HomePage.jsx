@@ -1,8 +1,8 @@
-import Button from '../components/Button';
-import HeroImage from '../assets/Crimson_Desert_Steam_Cover.jpg';
-import featureImage1 from '../assets/openworld.jpg';
-import featureImage2 from '../assets/minecraft.jpg';
-import featureImage3 from '../assets/horror.jpg';
+import Button from '../../components/Button';
+import HeroImage from '../../assets/Crimson_Desert_Steam_Cover.jpg';
+import featureImage1 from '../../assets/openworld.jpg';
+import featureImage2 from '../../assets/minecraft.jpg';
+import featureImage3 from '../../assets/horror.jpg';
 
 const HomePage = () => {
   return (

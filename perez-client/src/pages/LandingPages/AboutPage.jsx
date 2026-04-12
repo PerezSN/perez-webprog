@@ -1,9 +1,9 @@
-import Button from '../components/Button';
-import Rgrid1 from '../assets/drg.jpg';
-import Rgrid2 from '../assets/ddo2.jpg';
-import Rgrid3 from '../assets/f4.png';
-import Rgrid4 from '../assets/mhwilds.png';
-import Hero1 from '../assets/horror.jpg';
+import Button from '../../components/Button';
+import Rgrid1 from '../../assets/drg.jpg';
+import Rgrid2 from '../../assets/ddo2.jpg';
+import Rgrid3 from '../../assets/f4.png';
+import Rgrid4 from '../../assets/mhwilds.png';
+import Hero1 from '../../assets/horror.jpg';
 
 const AboutPage = () => {
   return (
