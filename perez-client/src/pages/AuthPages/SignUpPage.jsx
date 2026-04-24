@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../../layouts/AuthLayout";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <AuthLayout>
 
@@ -13,7 +20,7 @@ const SignUpPage = () => {
         Join GameSphere and start exploring.
       </p>
 
-      <form className="mt-6 space-y-4">
+      <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
 
         <input
           type="text"

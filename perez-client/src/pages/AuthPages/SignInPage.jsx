@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../../layouts/AuthLayout";
 
 const SignInPage = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <AuthLayout>
 
@@ -13,7 +20,7 @@ const SignInPage = () => {
         Welcome back! Please login to continue.
       </p>
 
-      <form className="mt-6 space-y-4">
+      <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
 
         <input
           type="email"
@@ -28,6 +35,7 @@ const SignInPage = () => {
         />
 
         <button
+          
           type="submit"
           className="w-full rounded-lg bg-purple-600 py-2 font-semibold text-white hover:bg-purple-700 transition"
         >

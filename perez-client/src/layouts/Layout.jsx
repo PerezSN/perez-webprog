@@ -1,12 +1,13 @@
+import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <div className="min-h-screen bg-zinc-950">
       <NavBar />
       <main className="pt-20">
-        {children}
+        <Outlet />
       </main>
       <Footer />
     </div>
