@@ -1,5 +1,5 @@
 import ArticleList from "../../components/ArticleList";
-import articles from "../../assets/article-content";
+import articles from "../../data/article-content";
 import Button from "../../components/Button";
 
 const ArticleListPage = () => {

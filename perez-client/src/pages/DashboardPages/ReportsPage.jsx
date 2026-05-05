@@ -1,10 +1,65 @@
 import { Typography, Stack, Card, CardContent } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
+import { Gauge } from "@mui/x-charts/Gauge";
+import { useRef } from "react";
+import { useEffect } from "react";
+import { Button } from "@mui/material";
+
 
 const ReportsPage = () => {
+ const handlePrint = () => {
+  window.print();
+};
+
+
   return (
+    
     <>
+    <style>
+{`
+@media print {
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Remove dark cards */
+  .MuiCard-root {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+  }
+
+  /* Fix text */
+  .MuiTypography-root {
+    color: black !important;
+  }
+
+  /* Charts text */
+  svg text {
+    fill: black !important;
+  }
+
+  /* Hide button when printing */
+  button {
+    display: none !important;
+  }
+
+}
+`}
+</style>
+      <Button
+        variant="contained"
+        onClick={handlePrint}
+        sx={{
+          mb: 3,
+          background: "linear-gradient(to right, #9333ea, #db2777)",
+        }}
+      >
+        Export to PDF
+      </Button>
       <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
         Reports
       </Typography>
@@ -23,7 +78,7 @@ const ReportsPage = () => {
             </Typography>
 
             <BarChart
-              colors={["#c084fc", "#db2777"]} // Purple and Pink branding
+              colors={["#c084fc", "#db2777"]}
               series={[
                 { data: [10, 20, 30, 25, 40], label: "Users" },
                 { data: [5, 15, 20, 18, 35], label: "Posts" },
@@ -49,17 +104,17 @@ const ReportsPage = () => {
                 },
               ]}
               sx={{
-                // force ALL chart text to white
+
                 "& text": {
                   fill: "#ffffff !important",
                 },
 
-                // legend text specifically
+
                 "& .MuiChartsLegend-label": {
                   fill: "#ffffff !important",
                 },
 
-                // legend container (sometimes needed)
+
                 "& .MuiChartsLegend-root": {
                   color: "#ffffff !important",
                 },
@@ -76,7 +131,7 @@ const ReportsPage = () => {
             </Typography>
 
             <PieChart
-              colors={["#c084fc", "#db2777", "#9333ea", "#be185d"]} // Brand variations
+              colors={["#c084fc", "#db2777", "#9333ea", "#be185d"]}
               series={[
                 {
                   data: [
@@ -96,22 +151,20 @@ const ReportsPage = () => {
                 },
               }}
               sx={{
-                // force ALL chart text to white
+
                 "& text": {
                   fill: "#ffffff !important",
                 },
 
-                // legend text specifically
                 "& .MuiChartsLegend-label": {
                   fill: "#ffffff !important",
                 },
 
-                // legend container (sometimes needed)
                 "& .MuiChartsLegend-root": {
                   color: "#ffffff !important",
                 },
 
-                
+
               }}
             />
           </CardContent>

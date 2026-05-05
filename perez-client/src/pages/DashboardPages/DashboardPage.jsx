@@ -27,8 +27,8 @@ const rows = [
   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: 44 },
+  { id: 6, lastName: 'Melisandre', firstName: 'Sarya', age: 150 },
   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
@@ -83,38 +83,38 @@ function DashboardPage() {
               <Typography sx={{ mb: 2 }}>System Performance</Typography>
 
               <Gauge
-  width={120}
-  height={120}
-  value={75}
-  sx={{
-    "& text": {
-      fill: "#ffffff !important", // ✅ force ALL SVG text to white
-    },
-    "& .MuiGauge-referenceArc": {
-      fill: "#27272a",
-    },
-    "& .MuiGauge-valueArc": {
-      fill: "#c084fc",
-    },
-  }}
-/>
+                width={120}
+                height={120}
+                value={75}
+                sx={{
+                  "& text": {
+                    fill: "#ffffff !important", 
+                  },
+                  "& .MuiGauge-referenceArc": {
+                    fill: "#27272a",
+                  },
+                  "& .MuiGauge-valueArc": {
+                    fill: "#c084fc",
+                  },
+                }}
+              />
 
-<Gauge
-  width={120}
-  height={120}
-  value={50}
-  sx={{
-    "& text": {
-      fill: "#ffffff !important",
-    },
-    "& .MuiGauge-referenceArc": {
-      fill: "#27272a",
-    },
-    "& .MuiGauge-valueArc": {
-      fill: "#db2777",
-    },
-  }}
-/>
+              <Gauge
+                width={120}
+                height={120}
+                value={50}
+                sx={{
+                  "& text": {
+                    fill: "#ffffff !important",
+                  },
+                  "& .MuiGauge-referenceArc": {
+                    fill: "#27272a",
+                  },
+                  "& .MuiGauge-valueArc": {
+                    fill: "#db2777",
+                  },
+                }}
+              />
             </CardContent>
           </Card>
 
@@ -170,7 +170,7 @@ function DashboardPage() {
               Users Overview
             </Typography>
 
-            <Box sx={{ height: 400, width: '100%' }}>
+            <Box sx={{ height: 400, width: '100%', overflowX: 'auto' }}>
               <DataGrid
                 rows={rows}
                 columns={columns}
@@ -183,6 +183,7 @@ function DashboardPage() {
                 checkboxSelection
                 disableRowSelectionOnClick
                 sx={{
+                  width: '100%', // Ensure DataGrid takes full width of its container
                   color: "#000000",
                   border: "none",
                   backgroundColor: "#ffffff",

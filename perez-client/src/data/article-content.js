@@ -1,6 +1,6 @@
-import openworldImg from "./openworld.jpg";
-import survivalImg from "./minecraft.jpg";
-import horrorImg from "./horror.jpg";
+import openworldImg from "../assets/openworld.jpg";
+import survivalImg from "../assets/minecraft.jpg";
+import horrorImg from "../assets/horror.jpg";
 
 const articles = [
   {

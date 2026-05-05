@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -164,6 +165,9 @@ const DashLayout = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const pageTitle = getPageTitle(location.pathname);
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
   const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
@@ -213,14 +217,14 @@ const DashLayout = () => {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>
-            <Button 
-              color="inherit" 
-              variant="outlined" 
-              sx={{ 
-                borderColor: '#9333ea', 
-                color: '#c084fc', 
-                '&:hover': { borderColor: '#db2777', color: '#db2777', bgcolor: alpha('#db2777', 0.05) } 
-              }} 
+            <Button
+              color="inherit"
+              variant="outlined"
+              sx={{
+                borderColor: '#9333ea',
+                color: '#c084fc',
+                '&:hover': { borderColor: '#db2777', color: '#db2777', bgcolor: alpha('#db2777', 0.05) }
+              }}
               onClick={handleLogout}
             >
               Logout
@@ -277,7 +281,7 @@ const DashLayout = () => {
             ))}
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, color: '#ffffff' }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, color: '#ffffff', minWidth: 0 }}>
           <DrawerHeader />
           {/* Content */}
           <Outlet />
