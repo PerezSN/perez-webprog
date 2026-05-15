@@ -9,13 +9,13 @@ const Layout = () => {
  
     useEffect(() => {
     if (pathname === "/" || pathname === "") {
-      document.title = "perez.dev";
+      document.title = "GameHub";
     } else if (pathname.includes("about")) {
-      document.title = "About | perez.dev";
+      document.title = "About | GameHub";
     } else if (pathname.includes("articles")) {
-      document.title = "Articles | perez.dev";
+      document.title = "Articles | GameHub";
     } else {
-      document.title = "perez.dev";
+      document.title = "GameHub";
     }
   }, [pathname]);
 

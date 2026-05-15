@@ -1,8 +1,29 @@
+import { useEffect, useState } from "react";
 import ArticleList from "../../components/ArticleList";
-import articles from "../../data/article-content";
 import Button from "../../components/Button";
+import { fetchArticles } from "../../services/ArticleService";
 
 const ArticleListPage = () => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadArticles = async () => {
+      try {
+        const { data } = await fetchArticles();
+        setArticles(data?.articles || []);
+      } catch (err) {
+        console.error("Error fetching articles:", err);
+        setError("Unable to load articles right now.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadArticles();
+  }, []);
+
   return (
     <div className="flex w-full flex-col gap-6">
 
@@ -27,7 +48,9 @@ const ArticleListPage = () => {
 
       
       <section className="border-b border-zinc-800 bg-zinc-950 px-4 py-8 sm:px-6 lg:px-8">
-        <ArticleList articles={articles} />
+        {loading && <p className="text-zinc-400">Loading articles...</p>}
+        {error && <p className="text-red-400">{error}</p>}
+        {!loading && !error && <ArticleList articles={articles} />}
       </section>
 
     </div>

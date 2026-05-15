@@ -11,12 +11,18 @@ const ArticleList = ({ articles }) => {
         >
           
           
-          <div className="w-full rounded-[1.25rem] bg-zinc-800 overflow-hidden transition duration-300 hover:brightness-110">
-            <img
-              src={article.image}
-              alt={article.title}
-              className="w-full h-48 object-cover"
-            />
+          <div className="flex h-48 w-full items-center justify-center rounded-[1.25rem] bg-zinc-800 overflow-hidden transition duration-300 hover:brightness-110">
+            {article.image ? (
+              <img
+                src={article.image}
+                alt={article.title}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="px-4 text-center text-sm font-semibold text-zinc-500">
+                {article.category}
+              </span>
+            )}
           </div>
 
          

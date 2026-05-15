@@ -1,19 +1,49 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import articles from "../../data/article-content";
 import Button from "../../components/Button";
+import { fetchArticleByName } from "../../services/ArticleService";
 
 const ArticlePage = () => {
   const { name } = useParams();
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const article = articles.find((a) => a.name === name);
+  useEffect(() => {
+    const loadArticle = async () => {
+      try {
+        const { data } = await fetchArticleByName(name);
+        setArticle(data);
+      } catch (err) {
+        console.error("Error fetching article:", err);
+        setError("Article not found");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!article) {
+    loadArticle();
+  }, [name]);
+
+  if (loading) {
     return (
-      <div className="px-4 py-10 text-white bg-zinc-950">
-        <h2>Article not found</h2>
+      <div className="px-4 py-10 text-zinc-400 bg-zinc-950">
+        Loading article...
       </div>
     );
   }
+
+  if (error || !article) {
+    return (
+      <div className="px-4 py-10 text-white bg-zinc-950">
+        <h2>{error || "Article not found"}</h2>
+      </div>
+    );
+  }
+
+  const bodyParagraphs = Array.isArray(article.content) && article.content.length
+    ? article.content
+    : article.paragraphs || [];
 
   return (
     <div className="flex w-full flex-col gap-6">
@@ -40,27 +70,21 @@ const ArticlePage = () => {
           </Button>
         </div>
         
-        
+        {article.image && (
+          <div className="mt-6 rounded-2xl overflow-hidden border border-zinc-800">
+            <img
+              src={article.image}
+              alt={article.title}
+              className="w-full h-full object-cover rounded-[1.25rem]"
+            />
+          </div>
+        )}
+
         <div className="max-w-3xl space-y-5 text-zinc-300 leading-7">
-          {article.content.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+          {bodyParagraphs.map((para, idx) => (
+            <p key={idx}>{para}</p>
           ))}
         </div>
-
-         <div className="mt-6 rounded-2xl overflow-hidden border border-zinc-800">
-            <img
-            src={article.image}
-            alt={article.title}
-            className="w-full h-full object-cover rounded-[1.25rem]"
-            />
-
-            {article.paragraphs.map((para, idx) => (
-              <p key={idx} className="p-4 text-zinc-300 leading-7">
-                {para}
-              </p>
-            ))}
-        </div>
-
 
       </section>
 

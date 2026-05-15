@@ -10,13 +10,13 @@ const AuthLayout = ({ children }) => {
 
   useEffect(() => {
     if (pathname === "/" || pathname === "") {
-      document.title = "perez.dev";
+      document.title = "GameHub";
     } else if (pathname.includes("signin")) {
-      document.title = "Sign In | perez.dev";
+      document.title = "Sign In | GameHub";
     } else if (pathname.includes("signup")) {
-      document.title = "Sign Up | perez.dev";
+      document.title = "Sign Up | GameHub";
     } else {
-      document.title = "perez.dev";
+      document.title = "GameHub";
     }
   }, [pathname]);
 

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -35,18 +34,28 @@ const dashboardNavItems = [
     title: "Dashboard",
     to: "/dashboard",
     icon: DashboardIcon,
+    requiredRole: [],
   },
   {
     label: "Reports",
     title: "Reports",
     to: "/dashboard/reports",
     icon: AssessmentIcon,
+    requiredRole: [],
+  },
+  {
+    label: "Articles",
+    title: "Articles",
+    to: "/dashboard/articles",
+    icon: ArticleIcon,
+    requiredRole: ["editor", "admin"],
   },
   {
     label: "Users",
     title: "Users",
     to: "/dashboard/users",
     icon: PeopleIcon,
+    requiredRole: ["admin"],
   },
 ];
 
@@ -164,11 +173,50 @@ const DashLayout = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const pageTitle = getPageTitle(location.pathname);
-  useEffect(() => {
-    document.title = pageTitle;
-  }, [pageTitle]);
   const navigate = useNavigate();
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    const type = localStorage.getItem('type');
+    const token = localStorage.getItem('token');
+
+    // Check if viewer is trying to access dashboard
+    if (type === 'viewer') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('firstName');
+      localStorage.removeItem('type');
+      navigate('/signin');
+      return;
+    }
+
+    // Check if user is authenticated
+    if (!token || !type) {
+      navigate('/signin');
+      return;
+    }
+
+    setUserType(type);
+  }, [navigate]);
+
+  const pageTitle = getPageTitle(location.pathname);
+
+  useEffect(() => {
+    document.title = `${pageTitle} | GameHub`;
+  }, [pageTitle]);
+
+  // Filter nav items based on user role
+  const visibleNavItems = dashboardNavItems.filter(item => {
+    if (item.requiredRole.length === 0) return true;
+    return userType && item.requiredRole.includes(userType);
+  });
+
+  // Check if current route is accessible
+  useEffect(() => {
+    const currentItem = dashboardNavItems.find(item => item.to === location.pathname);
+    if (currentItem && currentItem.requiredRole.length > 0 && userType && !currentItem.requiredRole.includes(userType)) {
+      navigate('/dashboard');
+    }
+  }, [location.pathname, userType, navigate]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -245,7 +293,7 @@ const DashLayout = () => {
           <Divider sx={{ borderColor: '#27272a' }} />
           {/* Drawer List */}
           <List>
-            {dashboardNavItems.map(({ label, to, icon: Icon }) => (
+            {visibleNavItems.map(({ label, to, icon: Icon }) => (
               <ListItem key={to} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
                   component={Link}

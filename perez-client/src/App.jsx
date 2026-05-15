@@ -12,7 +12,7 @@ import DashLayout from "./layouts/DashLayout";
 import DashboardPage from "./pages/DashboardPages/DashboardPage";
 import ReportsPage from "./pages/DashboardPages/ReportsPage";
 import UsersPage from "./pages/DashboardPages/UsersPage";
-
+import DashArticleListPage from "./pages/DashboardPages/DashArticleListPage";
 
 
 
@@ -36,6 +36,7 @@ function App() {
        <Route path="/dashboard" element={<DashLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="reports" element={<ReportsPage />} />
+          <Route path="articles" element={<DashArticleListPage />} />
           <Route path="users" element={<UsersPage />} />
         </Route>
 

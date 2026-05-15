@@ -1,0 +1,6 @@
+surname-webprog/.gitignore
+ 
+surname-server/.env
+surname-server/node_modules
+surname-client/.env
+surname-client/node_modules
