@@ -19,6 +19,14 @@ const SignInPage = () => {
       const { data } = await loginUser({ email, password }); 
       console.log('Login successful:', data); 
 
+      if (data.type === 'viewer') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('firstName');
+        localStorage.removeItem('type');
+        navigate("/");
+        return;
+      }
+
       // Save authentication data to localStorage
       localStorage.setItem('token', data.token); 
       localStorage.setItem('firstName', data.firstName); 
