@@ -219,7 +219,6 @@ const UsersPage = () => {
           color="primary"
           startIcon={<AddCircleIcon />}
           onClick={handleOpen}
-          sx={{ position: 'fixed', right: '20px', top: '100px', zIndex: 1000 }}
         >
           Add User
         </Button>
