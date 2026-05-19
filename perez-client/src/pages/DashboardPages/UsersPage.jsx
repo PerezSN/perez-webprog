@@ -36,6 +36,9 @@ const UsersPage = () => {
   const [editUserId, setEditUserId] = useState(null);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [newUser, setNewUser] = useState({
     firstName: '',
     lastName: '',
@@ -189,6 +192,24 @@ const UsersPage = () => {
     },
   ];
 
+  const filteredUsers = users.filter((user) => {
+    const searchValue = searchTerm.toLowerCase();
+    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase();
+    const matchesSearch =
+      !searchValue ||
+      fullName.includes(searchValue) ||
+      user.email?.toLowerCase().includes(searchValue) ||
+      user.username?.toLowerCase().includes(searchValue) ||
+      user.contactNumber?.toLowerCase().includes(searchValue);
+    const matchesRole = roleFilter === 'all' || user.type === roleFilter;
+    const matchesStatus =
+      statusFilter === 'all' ||
+      (statusFilter === 'active' && user.isActive) ||
+      (statusFilter === 'inactive' && !user.isActive);
+
+    return matchesSearch && matchesRole && matchesStatus;
+  });
+
   return (
     <Box sx={{ p: 3 }}>
       <Stack direction="row" sx={{ marginBottom: 5, justifyContent: 'space-between', alignItems: 'center' }}>
@@ -202,6 +223,47 @@ const UsersPage = () => {
         >
           Add User
         </Button>
+      </Stack>
+
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        spacing={2}
+        sx={{ mb: 2, bgcolor: 'background.paper', p: 2 }}
+      >
+        <TextField
+          label="Search users"
+          size="small"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ flex: 1 }}
+        />
+
+        <FormControl size="small" sx={{ minWidth: 160 }}>
+          <InputLabel>Role</InputLabel>
+          <Select
+            label="Role"
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+          >
+            <MenuItem value="all">All roles</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="editor">Editor</MenuItem>
+            <MenuItem value="viewer">Viewer</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl size="small" sx={{ minWidth: 160 }}>
+          <InputLabel>Status</InputLabel>
+          <Select
+            label="Status"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <MenuItem value="all">All statuses</MenuItem>
+            <MenuItem value="active">Active</MenuItem>
+            <MenuItem value="inactive">Inactive</MenuItem>
+          </Select>
+        </FormControl>
       </Stack>
 
       <Modal open={open} onClose={handleClose}>
@@ -329,7 +391,7 @@ const UsersPage = () => {
 
       <Box sx={{ height: 500, width: '100%', bgcolor: 'background.paper' }}>
         <DataGrid
-          rows={users}
+          rows={filteredUsers}
           columns={columns}
           getRowId={(row) => row._id} 
           loading={loading}

@@ -42,6 +42,8 @@ const DashArticleListPage = () => {
   const [editArticleId, setEditArticleId] = useState(null);
   const [articlesList, setArticlesList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
   const [newArticle, setNewArticle] = useState({
     name: '',
     title: '',
@@ -172,6 +174,20 @@ const DashArticleListPage = () => {
     },
   ];
 
+  const categories = [...new Set(articlesList.map((article) => article.category).filter(Boolean))];
+  const filteredArticles = articlesList.filter((article) => {
+    const searchValue = searchTerm.toLowerCase();
+    const matchesSearch =
+      !searchValue ||
+      article.title?.toLowerCase().includes(searchValue) ||
+      article.name?.toLowerCase().includes(searchValue) ||
+      article.description?.toLowerCase().includes(searchValue) ||
+      article.category?.toLowerCase().includes(searchValue);
+    const matchesCategory = categoryFilter === 'all' || article.category === categoryFilter;
+
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <Box sx={{ p: 3 }}>
       <Stack
@@ -194,6 +210,36 @@ const DashArticleListPage = () => {
         >
           Add Article
         </Button>
+      </Stack>
+
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        spacing={2}
+        sx={{ mb: 2, bgcolor: 'background.paper', p: 2 }}
+      >
+        <TextField
+          label="Search articles"
+          size="small"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ flex: 1 }}
+        />
+
+        <FormControl size="small" sx={{ minWidth: 180 }}>
+          <InputLabel>Category</InputLabel>
+          <Select
+            label="Category"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+          >
+            <MenuItem value="all">All categories</MenuItem>
+            {categories.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Stack>
 
       <Modal open={open} onClose={handleClose}>
@@ -294,7 +340,7 @@ const DashArticleListPage = () => {
 
       <Box sx={{ height: 500, width: '100%', bgcolor: 'background.paper' }}>
         <DataGrid
-          rows={articlesList}
+          rows={filteredArticles}
           columns={columns}
           getRowId={(row) => row._id}
           loading={loading}
