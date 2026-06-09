@@ -9,14 +9,14 @@ import {
   Select,
   FormHelperText,
   Stack,
-  Switch,
   TextField,
   Typography,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid } from '@mui/x-data-grid';
-import { fetchUsers, createUser, updateUser } from '../../services/UserService'; 
+import { fetchUsers, createUser, updateUser, deleteUser } from '../../services/UserService'; 
 
 const modalStyle = {
   position: 'absolute',
@@ -155,12 +155,15 @@ const UsersPage = () => {
     }
   };
 
-  const handleToggleActive = async (id, isActive) => {
-    try {
-      await updateUser(id, { isActive: !isActive });
-      loadUsers();
-    } catch (error) {
-      console.error('Error toggling user status:', error);
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      try {
+        await deleteUser(id);
+        loadUsers();
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert(error.response?.data?.message || 'Error deleting user');
+      }
     }
   };
 
@@ -182,11 +185,15 @@ const UsersPage = () => {
           <Button variant="contained" size="small" onClick={() => handleEdit(params.row?._id || params.id)}>
             Edit
           </Button>
-          <Switch
-            checked={params.row?.isActive || false}
-            onChange={() => handleToggleActive(params.row?._id || params.id, params.row?.isActive)}
-            color="primary"
-          />
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            startIcon={<DeleteIcon />}
+            onClick={() => handleDelete(params.row?._id || params.id)}
+          >
+            Delete
+          </Button>
         </Box>
       ),
     },

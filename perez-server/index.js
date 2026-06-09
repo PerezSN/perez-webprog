@@ -33,6 +33,11 @@ app.use(cors(corsOptions));
 app.use("/api/users", userRoutes);
 app.use("/api/articles", articleRoutes);
 
+// Root Route for Vercel
+app.get("/", (req, res) => {
+  res.send("API Sean is working");
+});
+
 // Error Handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -41,3 +46,6 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Export the app for Vercel serverless function wrapper
+module.exports = app;
