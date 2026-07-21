@@ -4,9 +4,9 @@ const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
-const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
-const articleRoutes = require("./routes/articleRoutes");
+const connectDB = require("./components/config/db");
+const userRoutes = require("./components/routes/userRoutes");
+const articleRoutes = require("./components/routes/articleRoutes");
 
 
 const app = express();
@@ -19,8 +19,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // vercel options
+const allowedOrigins = [
+  'http://localhost:5173', // Your local frontend
+  'https://perez-client.onrender.com', // Your deployed frontend
+  // Add any other client URLs here
+];
+
 const corsOptions = {
-  origin: "*", // Allow all origins
+  origin: function (origin, callback) {
+    !origin || allowedOrigins.includes(origin) ? callback(null, true) : callback(new Error('Not allowed by CORS'));
+  },
   credentials: true, // Allow credentials
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
